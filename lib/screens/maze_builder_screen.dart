@@ -47,28 +47,46 @@ class _MazeBuilderScreenState extends State<MazeBuilderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text("Build Your Maze"),
         actions: [
           IconButton(icon: Icon(Icons.shuffle), onPressed: _generateRandom),
           IconButton(icon: Icon(Icons.play_arrow), onPressed: _startRace),
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: MazeGrid(
-              maze: maze,
-              onCellTapped: _toggleWall,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: ElevatedButton.icon(
-              onPressed: _startRace,
-              icon: Icon(Icons.rocket_launch),
-              label: Text("Start Algorithm Race"),
-            ),
+
+          Column(
+            children: [
+              Expanded(
+                child: MazeGrid(maze: maze, onCellTapped: _toggleWall),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.brown,
+
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: _startRace,
+                  icon: Icon(Icons.rocket_launch, color: Colors.white),
+                  label: Text(
+                    "Start Algorithm Race",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

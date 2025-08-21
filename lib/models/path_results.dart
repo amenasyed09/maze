@@ -1,11 +1,11 @@
+// In your PathResult class (path_result.dart)
+
 import 'node.dart';
 
 class PathResult {
   final List<Node> path;
   final List<Node> visitedNodes;
   final String algorithmName;
-  final int pathLength;
-  final int nodesExplored;
   final Duration timeTaken;
   final bool pathFound;
 
@@ -13,13 +13,17 @@ class PathResult {
     required this.path,
     required this.visitedNodes,
     required this.algorithmName,
-    required this.pathLength,
-    required this.nodesExplored,
     required this.timeTaken,
-    required this.pathFound,
-  });
+  }) : pathFound = path.isNotEmpty; // Path is found if the path list is not empty
 
-  double get efficiency => pathFound ? pathLength / nodesExplored : 0.0;
+  // FIX: Calculate pathLength directly from the path list.
+  int get pathLength => path.length;
+
+  // FIX: Calculate nodesExplored directly from the visitedNodes list.
+  int get nodesExplored => visitedNodes.length;
+
+  // FIX: The efficiency calculation is now automatically correct and safe.
+  double get efficiency => (pathFound && nodesExplored > 0) ? pathLength / nodesExplored : 0.0;
 
   @override
   String toString() {

@@ -1,3 +1,4 @@
+// Updated MazeGrid Widget with images and character support
 import 'package:flutter/material.dart';
 import '../models/maze.dart';
 import '../models/node.dart';
@@ -5,45 +6,167 @@ import '../models/node.dart';
 class MazeGrid extends StatelessWidget {
   final Maze maze;
   final void Function(int x, int y)? onCellTapped;
+  final String? aiCharacter; // 'turtle', 'eagle', or 'rabbit'
+  final int? aiX; // AI character position
+  final int? aiY; // AI character position
 
   const MazeGrid({
     required this.maze,
     this.onCellTapped,
+    this.aiCharacter,
+    this.aiX,
+    this.aiY,
   });
 
-  Color _getColor(Node node) {
-    if (node.isStart) return Colors.green;
-    if (node.isEnd) return Colors.red;
-    if (node.isPath) return Colors.orange;
-    if (node.isVisited) return Colors.blue.withOpacity(0.5);
-    if (node.isWall) return Colors.black;
-    return Colors.white;
+  Color? _getColor(Node node) {
+    // Only return colors for visited states, otherwise null for images
+    if (node.isPath && node.isVisited) return Colors.orange;
+    if (node.isVisited && !node.isWall) return Colors.blue.withOpacity(0.5);
+    return null; // Use images for non-visited states
+  }
+
+  String? _getImagePath(Node node) {
+    if (node.isStart || node.isEnd) return 'assets/portal.webp';
+    if (node.isWall) return 'assets/mud.jpg';
+    if (!node.isVisited) return 'assets/grass.webp';
+    return null; // Use colors for visited states
+  }
+
+  String? _getCharacterImagePath() {
+    if (aiCharacter == null) return null;
+    return 'assets/images/$aiCharacter.png';
   }
 
   @override
   Widget build(BuildContext context) {
-    final double size = MediaQuery.of(context).size.width / maze.width;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Calculate optimal cell size based on available space
+        final double maxWidth = constraints.maxWidth;
+        final double maxHeight = constraints.maxHeight;
 
-    return Column(
-      children: maze.grid.map((row) {
-        return Row(
-          children: row.map((node) {
-            return GestureDetector(
-              onTap: () {
-                if (onCellTapped != null) onCellTapped!(node.x, node.y);
-              },
-              child: Container(
-                width: size,
-                height: size,
-                decoration: BoxDecoration(
-                  color: _getColor(node),
-                  border: Border.all(color: Colors.grey.shade300, width: 0.5),
-                ),
-              ),
-            );
-          }).toList(),
+        // Calculate size based on both width and height constraints
+        final double sizeByWidth = maxWidth / maze.width;
+        final double sizeByHeight = maxHeight / maze.height;
+
+        // Use the smaller size to ensure the maze fits within bounds
+        final double cellSize = (sizeByWidth < sizeByHeight ? sizeByWidth : sizeByHeight)
+            .clamp(2.0, 20.0); // Minimum 2px, maximum 20px per cell
+
+        return Center(
+          child: SizedBox(
+            width: maze.width * cellSize,
+            height: maze.height * cellSize,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: maze.grid.asMap().entries.map((rowEntry) {
+                final int rowIndex = rowEntry.key;
+                final List row = rowEntry.value;
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: row.asMap().entries.map((colEntry) {
+                    final int colIndex = colEntry.key;
+                    final Node node = colEntry.value;
+
+                    return GestureDetector(
+                      onTap: () {
+                        if (onCellTapped != null) onCellTapped!(node.x, node.y);
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        width: cellSize,
+                        height: cellSize,
+                        decoration: BoxDecoration(
+                          color: _getColor(node) ?? Colors.transparent,
+                          border: cellSize > 4 && _getColor(node) != null
+                              ? Border.all(
+                            color: Colors.grey.shade400,
+                            width: cellSize > 10 ? 0.5 : 0.2,
+                          )
+                              : null,
+                          borderRadius: (node.isStart || node.isEnd) && _getColor(node) != null
+                              ? BorderRadius.circular(cellSize * 0.2)
+                              : null,
+                        ),
+                        child: Stack(
+                          children: [
+                            // Background image (if not visited or for walls/portals)
+                            if (_getImagePath(node) != null)
+                              Positioned.fill(
+                                child: Image.asset(
+                                  _getImagePath(node)!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    // Fallback to colored container if image fails to load
+                                    return Container(
+                                      color: node.isWall ? Colors.black : Colors.white,
+                                    );
+                                  },
+                                ),
+                              ),
+
+                            // AI Character overlay (if at this position)
+                            if (aiX == node.x && aiY == node.y && _getCharacterImagePath() != null)
+                              Positioned.fill(
+                                child: Image.asset(
+                                  _getCharacterImagePath()!,
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    // Fallback to icon if character image fails to load
+                                    return Icon(
+                                      Icons.pets,
+                                      size: cellSize * 0.8,
+                                      color: Colors.purple,
+                                    );
+                                  },
+                                ),
+                              ),
+
+                            // Legacy icon content for very large cells (optional)
+                            if (cellSize > 16 && _getColor(node) != null)
+                              Positioned.fill(
+                                child: _buildCellContent(node, cellSize) ?? const SizedBox(),
+                              ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                );
+              }).toList(),
+            ),
+          ),
         );
-      }).toList(),
+      },
     );
+  }
+
+  Widget? _buildCellContent(Node node, double cellSize) {
+    if (cellSize < 12) return null; // Too small for content
+
+    IconData? icon;
+    Color? iconColor;
+
+    if (node.isStart) {
+      icon = Icons.play_arrow;
+      iconColor = Colors.white;
+    } else if (node.isEnd) {
+      icon = Icons.flag;
+      iconColor = Colors.white;
+    } else if (node.isPath) {
+      icon = Icons.circle;
+      iconColor = Colors.white;
+    }
+
+    if (icon != null) {
+      return Icon(
+        icon,
+        size: cellSize * 0.6,
+        color: iconColor,
+      );
+    }
+
+    return null;
   }
 }

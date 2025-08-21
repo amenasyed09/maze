@@ -13,10 +13,9 @@ class Dijkstra {
         path: [],
         visitedNodes: [],
         algorithmName: 'Dijkstra',
-        pathLength: 0,
-        nodesExplored: 0,
+
         timeTaken: Duration.zero,
-        pathFound: false,
+
       );
     }
 
@@ -54,10 +53,9 @@ class Dijkstra {
           path: path,
           visitedNodes: visitedNodes,
           algorithmName: 'Dijkstra',
-          pathLength: path.length,
-          nodesExplored: visitedNodes.length,
+
           timeTaken: stopwatch.elapsed,
-          pathFound: true,
+
         );
       }
 
@@ -79,10 +77,8 @@ class Dijkstra {
       path: [],
       visitedNodes: visitedNodes,
       algorithmName: 'Dijkstra',
-      pathLength: 0,
-      nodesExplored: visitedNodes.length,
+
       timeTaken: stopwatch.elapsed,
-      pathFound: false,
     );
   }
 

@@ -10,10 +10,9 @@ class DFS {
         path: [],
         visitedNodes: [],
         algorithmName: 'DFS',
-        pathLength: 0,
-        nodesExplored: 0,
+
         timeTaken: Duration.zero,
-        pathFound: false,
+
       );
     }
 
@@ -35,10 +34,9 @@ class DFS {
         path: path,
         visitedNodes: visitedNodes,
         algorithmName: 'DFS',
-        pathLength: path.length,
-        nodesExplored: visitedNodes.length,
+
         timeTaken: stopwatch.elapsed,
-        pathFound: true,
+
       );
     }
 
@@ -46,10 +44,9 @@ class DFS {
       path: [],
       visitedNodes: visitedNodes,
       algorithmName: 'DFS',
-      pathLength: 0,
-      nodesExplored: visitedNodes.length,
+
       timeTaken: stopwatch.elapsed,
-      pathFound: false,
+
     );
   }
 

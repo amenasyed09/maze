@@ -13,11 +13,9 @@ class AStar {
         path: [],
         visitedNodes: [],
         algorithmName: 'A*',
-        pathLength: 0,
-        nodesExplored: 0,
+
         timeTaken: Duration.zero,
-        pathFound: false,
-      );
+        );
     }
 
     Stopwatch stopwatch = Stopwatch()..start();
@@ -55,10 +53,9 @@ class AStar {
           path: path,
           visitedNodes: visitedNodes,
           algorithmName: 'A*',
-          pathLength: path.length,
-          nodesExplored: visitedNodes.length,
+
           timeTaken: stopwatch.elapsed,
-          pathFound: true,
+
         );
       }
 
@@ -85,10 +82,8 @@ class AStar {
       path: [],
       visitedNodes: visitedNodes,
       algorithmName: 'A*',
-      pathLength: 0,
-      nodesExplored: visitedNodes.length,
       timeTaken: stopwatch.elapsed,
-      pathFound: false,
+
     );
   }
 

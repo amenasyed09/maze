@@ -11,10 +11,9 @@ class BFS {
         path: [],
         visitedNodes: [],
         algorithmName: 'BFS',
-        pathLength: 0,
-        nodesExplored: 0,
+
         timeTaken: Duration.zero,
-        pathFound: false,
+
       );
     }
 
@@ -49,10 +48,9 @@ class BFS {
           path: path,
           visitedNodes: visitedNodes,
           algorithmName: 'BFS',
-          pathLength: path.length,
-          nodesExplored: visitedNodes.length,
+
           timeTaken: stopwatch.elapsed,
-          pathFound: true,
+
         );
       }
 
@@ -70,10 +68,9 @@ class BFS {
       path: [],
       visitedNodes: visitedNodes,
       algorithmName: 'BFS',
-      pathLength: 0,
-      nodesExplored: visitedNodes.length,
+
       timeTaken: stopwatch.elapsed,
-      pathFound: false,
+
     );
   }
 
