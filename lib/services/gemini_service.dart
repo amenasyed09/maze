@@ -71,12 +71,17 @@ Focus on why certain algorithms performed better/worse based on the maze charact
     String winner = '';
 
     for (var entry in results.entries) {
-      if (entry.value.pathFound) {
+      final result = entry.value;
+
+      if (result.pathFound) {
         if (bestResult == null ||
-            entry.value.pathLength < bestResult.pathLength ||
-            (entry.value.pathLength == bestResult.pathLength &&
-                entry.value.timeTaken < bestResult.timeTaken)) {
-          bestResult = entry.value;
+            result.pathLength < bestResult.pathLength ||
+            (result.pathLength == bestResult.pathLength &&
+                result.nodesExplored < bestResult.nodesExplored) ||
+            (result.pathLength == bestResult.pathLength &&
+                result.nodesExplored == bestResult.nodesExplored &&
+                result.computeTime < bestResult.computeTime)) {
+          bestResult = result;
           winner = entry.key;
         }
       }
@@ -84,6 +89,7 @@ Focus on why certain algorithms performed better/worse based on the maze charact
 
     return winner.isNotEmpty ? winner : 'No winner (no paths found)';
   }
+
 
   static String _buildAnalysisContext(Map<String, PathResult> results, String winner) {
     final buffer = StringBuffer();
@@ -97,8 +103,9 @@ Focus on why certain algorithms performed better/worse based on the maze charact
       if (result.pathFound) {
         buffer.writeln('- Path Length: ${result.pathLength}');
         buffer.writeln('- Nodes Explored: ${result.nodesExplored}');
-        buffer.writeln('- Time: ${result.timeTaken.inMilliseconds}ms');
-        buffer.writeln('- Efficiency: ${result.efficiency.toStringAsFixed(3)}');
+        buffer.writeln('- Compute Time: ${result.computeTime.inMilliseconds} ms');
+        buffer.writeln('- Visualization Time: ${result.visualizationTime?.inMilliseconds} ms');
+        buffer.writeln('- Efficiency: ${(result.efficiency * 100).toStringAsFixed(1)}%');
       }
       buffer.writeln();
     }

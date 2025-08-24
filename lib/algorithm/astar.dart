@@ -1,9 +1,7 @@
-import 'dart:collection';
 import 'package:collection/collection.dart';
 
-import '../models/node.dart';
 import '../models/maze.dart';
-
+import '../models/node.dart';
 import '../models/path_results.dart';
 
 class AStar {
@@ -13,9 +11,9 @@ class AStar {
         path: [],
         visitedNodes: [],
         algorithmName: 'A*',
-
-        timeTaken: Duration.zero,
-        );
+        computeTime: Duration.zero,
+        visualizationTime: Duration.zero,
+      );
     }
 
     Stopwatch stopwatch = Stopwatch()..start();
@@ -49,13 +47,13 @@ class AStar {
       if (current == end) {
         stopwatch.stop();
         List<Node> path = _reconstructPath(current);
+
         return PathResult(
           path: path,
           visitedNodes: visitedNodes,
           algorithmName: 'A*',
-
-          timeTaken: stopwatch.elapsed,
-
+          computeTime: stopwatch.elapsed,
+          visualizationTime: Duration(milliseconds: visitedNodes.length * 50),
         );
       }
 
@@ -82,8 +80,8 @@ class AStar {
       path: [],
       visitedNodes: visitedNodes,
       algorithmName: 'A*',
-      timeTaken: stopwatch.elapsed,
-
+      computeTime: stopwatch.elapsed,
+      visualizationTime: Duration(milliseconds: visitedNodes.length * 50),
     );
   }
 

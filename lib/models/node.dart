@@ -39,24 +39,21 @@
       return ((x - other.x).abs() + (y - other.y).abs()).toDouble();
     }
 
-    // In your Node class (node.dart)
 
     List<Node> getNeighbors(List<List<Node>> grid) {
       List<Node> neighbors = [];
 
-      // 4-directional movement
       List<List<int>> directions = [
-        [0, -1], // Up
-        [0, 1],  // Down
-        [-1, 0], // Left
-        [1, 0]   // Right
+        [0, -1],
+        [0, 1],
+        [-1, 0],
+        [1, 0]
       ];
 
       for (var dir in directions) {
         int newX = x + dir[0];
         int newY = y + dir[1];
 
-        // THE FIX: Check X against width (columns) and Y against height (rows)
         if (newX >= 0 && newX < grid[0].length &&
             newY >= 0 && newY < grid.length) {
           neighbors.add(grid[newY][newX]); // Access grid with grid[y][x]

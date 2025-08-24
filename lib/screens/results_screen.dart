@@ -20,17 +20,15 @@ class ResultsScreen extends StatelessWidget {
         if (!resultB.pathFound) return -1;
 
         // 1. Primary Sort: Path Length (shorter is better)
-        // A* and BFS will be tied here. DFS might be longer.
         int pathComparison = resultA.pathLength.compareTo(resultB.pathLength);
         if (pathComparison != 0) return pathComparison;
 
-        // 2. Secondary Sort: Nodes Explored (fewer is better) - THE KEY FIX!
-        // This is the best metric for "winning". A* should win here.
+        // 2. Secondary Sort: Nodes Explored (fewer is better)
         int nodesComparison = resultA.nodesExplored.compareTo(resultB.nodesExplored);
         if (nodesComparison != 0) return nodesComparison;
 
-        // 3. Tertiary Sort: Time Taken (faster is better)
-        return resultA.timeTaken.compareTo(resultB.timeTaken);
+        // 3. Tertiary Sort: Compute Time (faster is better)
+        return resultA.computeTime.compareTo(resultB.computeTime);
       });
 
     return Scaffold(
@@ -46,76 +44,77 @@ class ResultsScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
+          // Background
           Positioned.fill(
             child: Opacity(
-              opacity: 0.6, // control how much of background is visible
+              opacity: 0.6,
               child: Image.asset(
                 "assets/background.png",
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          Container(
-            // ... rest of your code is fine
 
-            child: ListView.builder(
-              padding: const EdgeInsets.fromLTRB(16, kToolbarHeight + 24, 16, 16),
-              itemCount: sortedResults.length,
-              itemBuilder: (context, index) {
-                final entry = sortedResults[index];
-                final result = entry.value;
+          // Results
+          ListView.builder(
+            padding: const EdgeInsets.fromLTRB(16, kToolbarHeight + 24, 16, 16),
+            itemCount: sortedResults.length,
+            itemBuilder: (context, index) {
+              final entry = sortedResults[index];
+              final result = entry.value;
 
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  color: Colors.white.withOpacity(0.9), // Slightly transparent card
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Algorithm Name
-                        Text(
-                          entry.key,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
+              return Card(
+                margin: const EdgeInsets.only(bottom: 16),
+                color: Colors.white.withOpacity(0.9),
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Algorithm Name
+                      Text(
+                        entry.key,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
                         ),
-                        const SizedBox(height: 8),
+                      ),
+                      const SizedBox(height: 8),
 
-                        // Stats
+                      // Stats
+                      _buildStatRow(
+                        "Path Found",
+                        result.pathFound ? "Yes" : "No",
+                        result.pathFound ? Colors.green : Colors.red,
+                      ),
+                      if (result.pathFound) ...[
+                        _buildStatRow("Path Length", "${result.pathLength} steps",
+                            Colors.blueAccent),
+                        _buildStatRow("Nodes Explored", "${result.nodesExplored}",
+                            Colors.orange),
                         _buildStatRow(
-                          "Path Found",
-                          result.pathFound ? "Yes" : "No",
-                          result.pathFound ? Colors.green : Colors.red,
-                        ),
-                        if (result.pathFound) ...[
-                          _buildStatRow("Path Length", "${result.pathLength} steps",
-                              Colors.blueAccent),
-                          _buildStatRow("Nodes Explored", "${result.nodesExplored}",
-                              Colors.orange),
-                          _buildStatRow(
-                              "Time Taken",
-                              "${result.timeTaken.inMilliseconds} ms",
-                              Colors.teal),
-                          // The efficiency calculation will now be correct
-                          // because the PathResult model will handle it.
-                          _buildStatRow(
-                              "Efficiency",
-                              "${(result.efficiency * 100).toStringAsFixed(1)}%",
-                              Colors.purple),
-                        ],
+                            "Compute Time",
+                            "${result.computeTime.inMilliseconds} ms",
+                            Colors.teal),
+                        _buildStatRow(
+                            "Visualization Time",
+                            "${result.visualizationTime?.inMilliseconds} ms",
+                            Colors.indigo),
+                        _buildStatRow(
+                            "Efficiency",
+                            "${(result.efficiency * 100).toStringAsFixed(1)}%",
+                            Colors.purple),
                       ],
-                    ),
+                    ],
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ],
       ),

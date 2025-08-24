@@ -111,7 +111,7 @@ class _AlgorithmChatScreenState extends State<AlgorithmChatScreen>
           // Background Image
           Positioned.fill(
             child: Opacity(
-              opacity: 0.6, // control how much of background is visible
+              opacity: 0.6,
               child: Image.asset(
                 "assets/background.png",
                 fit: BoxFit.cover,

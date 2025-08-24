@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'node.dart';
 
 class Maze {
@@ -78,21 +80,31 @@ class Maze {
     endNode = null;
   }
 
-  // Generate random maze using recursive backtracking
-  void generateRandomMaze() {
+  void generateRandomMazeWithMultiplePaths() {
     clearMaze();
 
-    // Fill with walls
+    // 1. Fill with walls as before
     for (var row in grid) {
       for (var node in row) {
         node.isWall = true;
       }
     }
 
-    // Create paths using recursive backtracking
     _recursiveBacktrack(1, 1);
 
-    // Set random start and end
+    final Random random = Random();
+    int wallsToRemove = ((width * height) * 0.05).toInt(); // Remove about 5% of cells
+
+    for (int i = 0; i < wallsToRemove; i++) {
+      int x = random.nextInt(width);
+      int y = random.nextInt(height);
+
+      if (grid[y][x].isWall) {
+        grid[y][x].isWall = false;
+      }
+    }
+
+    // 4. Set random start and end as before
     setStart(1, 1);
     setEnd(width - 2, height - 2);
   }
@@ -110,7 +122,6 @@ class Maze {
       int newY = y + dir[1];
 
       if (isValidPosition(newX, newY) && grid[newY][newX].isWall) {
-        // Remove wall between current and new cell
         grid[y + dir[1] ~/ 2][x + dir[0] ~/ 2].isWall = false;
         _recursiveBacktrack(newX, newY);
       }

@@ -40,7 +40,7 @@ class _MazeBuilderScreenState extends State<MazeBuilderScreen> {
 
   void _generateRandom() {
     setState(() {
-      maze.generateRandomMaze();
+      maze.generateRandomMazeWithMultiplePaths();
     });
   }
 

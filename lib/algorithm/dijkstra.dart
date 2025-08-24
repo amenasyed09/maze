@@ -3,7 +3,6 @@ import 'package:collection/collection.dart';
 
 import '../models/node.dart';
 import '../models/maze.dart';
-
 import '../models/path_results.dart';
 
 class Dijkstra {
@@ -13,9 +12,8 @@ class Dijkstra {
         path: [],
         visitedNodes: [],
         algorithmName: 'Dijkstra',
-
-        timeTaken: Duration.zero,
-
+        computeTime: Duration.zero,
+        visualizationTime: Duration.zero,
       );
     }
 
@@ -43,7 +41,7 @@ class Dijkstra {
 
       if (onNodeVisited != null) {
         onNodeVisited(current);
-        await Future.delayed(Duration(milliseconds: 50));
+        await Future.delayed(const Duration(milliseconds: 50));
       }
 
       if (current == end) {
@@ -53,9 +51,8 @@ class Dijkstra {
           path: path,
           visitedNodes: visitedNodes,
           algorithmName: 'Dijkstra',
-
-          timeTaken: stopwatch.elapsed,
-
+          computeTime: stopwatch.elapsed,
+          visualizationTime: Duration(milliseconds: visitedNodes.length * 50),
         );
       }
 
@@ -77,8 +74,8 @@ class Dijkstra {
       path: [],
       visitedNodes: visitedNodes,
       algorithmName: 'Dijkstra',
-
-      timeTaken: stopwatch.elapsed,
+      computeTime: stopwatch.elapsed,
+      visualizationTime: Duration(milliseconds: visitedNodes.length * 50),
     );
   }
 

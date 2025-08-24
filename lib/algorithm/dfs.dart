@@ -1,6 +1,5 @@
 import '../models/node.dart';
 import '../models/maze.dart';
-
 import '../models/path_results.dart';
 
 class DFS {
@@ -10,9 +9,8 @@ class DFS {
         path: [],
         visitedNodes: [],
         algorithmName: 'DFS',
-
-        timeTaken: Duration.zero,
-
+        computeTime: Duration.zero,
+        visualizationTime: Duration.zero,
       );
     }
 
@@ -34,9 +32,8 @@ class DFS {
         path: path,
         visitedNodes: visitedNodes,
         algorithmName: 'DFS',
-
-        timeTaken: stopwatch.elapsed,
-
+        computeTime: stopwatch.elapsed,
+        visualizationTime: Duration(milliseconds: visitedNodes.length * 50),
       );
     }
 
@@ -44,9 +41,8 @@ class DFS {
       path: [],
       visitedNodes: visitedNodes,
       algorithmName: 'DFS',
-
-      timeTaken: stopwatch.elapsed,
-
+      computeTime: stopwatch.elapsed,
+      visualizationTime: Duration(milliseconds: visitedNodes.length * 50),
     );
   }
 
@@ -64,7 +60,7 @@ class DFS {
 
     if (onNodeVisited != null) {
       onNodeVisited(current);
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(const Duration(milliseconds: 50));
     }
 
     if (current == end) {

@@ -1,7 +1,6 @@
 import 'dart:collection';
 import '../models/node.dart';
 import '../models/maze.dart';
-
 import '../models/path_results.dart';
 
 class BFS {
@@ -11,9 +10,8 @@ class BFS {
         path: [],
         visitedNodes: [],
         algorithmName: 'BFS',
-
-        timeTaken: Duration.zero,
-
+        computeTime: Duration.zero,
+        visualizationTime: Duration.zero,
       );
     }
 
@@ -38,7 +36,7 @@ class BFS {
 
       if (onNodeVisited != null) {
         onNodeVisited(current);
-        await Future.delayed(Duration(milliseconds: 50));
+        await Future.delayed(const Duration(milliseconds: 50));
       }
 
       if (current == end) {
@@ -48,9 +46,8 @@ class BFS {
           path: path,
           visitedNodes: visitedNodes,
           algorithmName: 'BFS',
-
-          timeTaken: stopwatch.elapsed,
-
+          computeTime: stopwatch.elapsed,
+          visualizationTime: Duration(milliseconds: visitedNodes.length * 50),
         );
       }
 
@@ -68,9 +65,8 @@ class BFS {
       path: [],
       visitedNodes: visitedNodes,
       algorithmName: 'BFS',
-
-      timeTaken: stopwatch.elapsed,
-
+      computeTime: stopwatch.elapsed,
+      visualizationTime: Duration(milliseconds: visitedNodes.length * 50),
     );
   }
 
