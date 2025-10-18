@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import '../models/path_results.dart';
 
 class GeminiService {
-  static const String _apiKey = 'AIzaSyA4rEofWge0HUnuQ32QYoD0H3pXUYFWqkg'; // Replace with your API key
-  static const String _baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
-
+  static const String _apiKey = 'AIzaSyAUpwKkdr8t1p-Uxh8c1e5IIoFqLOyOq3A'; // Replace with your API key
+  static const String _baseUrl =
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
   static Future<String> analyzeAlgorithmResults(
       Map<String, PathResult> results,
       String userQuestion,
@@ -33,27 +33,25 @@ Focus on why certain algorithms performed better/worse based on the maze charact
 ''';
 
       final response = await http.post(
-        Uri.parse(_baseUrl).replace(queryParameters: {'key': _apiKey}),
+        Uri.parse(_baseUrl),
         headers: {
           'Content-Type': 'application/json',
           'x-goog-api-key': _apiKey,
         },
         body: jsonEncode({
-          'contents': [
+          "contents": [
             {
-              'parts': [
-                {'text': prompt}
+              "role": "user",
+              "parts": [
+                {"text": "Explain Dijkstra’s algorithm briefly."}
               ]
             }
-          ],
-          'generationConfig': {
-            'temperature': 0.7,
-            'topK': 40,
-            'topP': 0.95,
-            'maxOutputTokens': 300,
-          }
+          ]
         }),
       );
+
+      print('Status: ${response.statusCode}');
+      print('Response: ${response.body}');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
