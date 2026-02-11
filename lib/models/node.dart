@@ -6,10 +6,9 @@
     bool isVisited;
     bool isPath;
 
-    // For pathfinding
-    double gCost = double.infinity; // Distance from start
-    double hCost = double.infinity; // Heuristic distance to end
-    double fCost = double.infinity; // gCost + hCost
+    double gCost = double.infinity;
+    double hCost = double.infinity;
+    double fCost = double.infinity;
     Node? parent;
 
     Node({
@@ -56,7 +55,7 @@
 
         if (newX >= 0 && newX < grid[0].length &&
             newY >= 0 && newY < grid.length) {
-          neighbors.add(grid[newY][newX]); // Access grid with grid[y][x]
+          neighbors.add(grid[newY][newX]);
         }
       }
 

@@ -83,7 +83,6 @@ class Maze {
   void generateRandomMazeWithMultiplePaths() {
     clearMaze();
 
-    // 1. Fill with walls as before
     for (var row in grid) {
       for (var node in row) {
         node.isWall = true;
@@ -93,7 +92,7 @@ class Maze {
     _recursiveBacktrack(1, 1);
 
     final Random random = Random();
-    int wallsToRemove = ((width * height) * 0.05).toInt(); // Remove about 5% of cells
+    int wallsToRemove = ((width * height) * 0.05).toInt();
 
     for (int i = 0; i < wallsToRemove; i++) {
       int x = random.nextInt(width);
@@ -104,7 +103,7 @@ class Maze {
       }
     }
 
-    // 4. Set random start and end as before
+
     setStart(1, 1);
     setEnd(width - 2, height - 2);
   }
@@ -113,7 +112,7 @@ class Maze {
     grid[y][x].isWall = false;
 
     List<List<int>> directions = [
-      [0, -2], [2, 0], [0, 2], [-2, 0] // Up, Right, Down, Left (skip one cell)
+      [0, -2], [2, 0], [0, 2], [-2, 0]
     ];
     directions.shuffle();
 

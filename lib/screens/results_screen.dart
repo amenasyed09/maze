@@ -15,19 +15,15 @@ class ResultsScreen extends StatelessWidget {
         final resultA = a.value;
         final resultB = b.value;
 
-        // Push algorithms that didn't find a path to the bottom
         if (!resultA.pathFound) return 1;
         if (!resultB.pathFound) return -1;
 
-        // 1. Primary Sort: Path Length (shorter is better)
         int pathComparison = resultA.pathLength.compareTo(resultB.pathLength);
         if (pathComparison != 0) return pathComparison;
 
-        // 2. Secondary Sort: Nodes Explored (fewer is better)
         int nodesComparison = resultA.nodesExplored.compareTo(resultB.nodesExplored);
         if (nodesComparison != 0) return nodesComparison;
 
-        // 3. Tertiary Sort: Compute Time (faster is better)
         return resultA.computeTime.compareTo(resultB.computeTime);
       });
 

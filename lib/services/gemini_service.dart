@@ -45,7 +45,7 @@ Focus on why certain algorithms performed better/worse based on the maze charact
             {
               "role": "user",
               "parts": [
-                {"text": "Explain Dijkstra’s algorithm briefly."}
+                {"text": prompt}
               ]
             }
           ]
