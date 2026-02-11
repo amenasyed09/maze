@@ -1,5 +1,8 @@
 # 🧩 Maze Algorithm Visualizer (DFS vs BFS vs A*)
 
+## 🌐 Live Demo
+
+🔗 <a href="https://maze-b61a3.web.app/">  Live Demo </a>   
 An interactive **Flutter-based maze game** built as a **Data Structures & Algorithms (DSA) college project** to visually compare popular pathfinding algorithms in a fun and educational way.
 
 This app simulates a race between **Depth First Search (DFS)**, **Breadth First Search (BFS)**, and **A\*** as they navigate through a maze to reach a destination from a given source. Users can either generate a **random maze** or **design their own maze**, making it ideal for experimentation and learning.
@@ -49,9 +52,7 @@ This makes complex DSA concepts easier to understand through real examples.
 ---
 
 
-## 🌐 Live Demo
 
-🔗 **Live Demo:** _Coming Soon_  
 
 
 ---
